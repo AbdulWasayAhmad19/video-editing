@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   TIER 1 — PRIMITIVES  (`--raw-*`)
+   --------------------------------------------------------------------------- */
+:root {
+  --raw-color-white: #ffffff;
+  --raw-color-black: #000000; /* Pure Jet Black */
+  --raw-color-obsidian: #000000;
+  --raw-color-surface: #0a0a0a;
+  --raw-color-card: #121214;
+  
+  --raw-color-gray-100: #ffffff;
+  --raw-color-gray-300: #e4e4e7;
+  --raw-color-gray-400: #a1a1aa;
+  --raw-color-gray-800: #27272a;
+  --raw-color-gray-900: #18181b;
+  --raw-color-gray-950: #09090b;
+
+  --raw-color-accent: #e11d48; /* Exact Warm Rose Crimson Red from screenshot */
+  --raw-color-accent-secondary: #f43f5e; /* Vibrant Coral Pink Accent */
+  --raw-color-accent-glow: #e11d48;
+
+  --raw-duration-fast: 150ms;
+  --raw-duration-normal: 250ms;
+}
+
+/* ---------------------------------------------------------------------------
+   TIER 2 — SEMANTIC
+   --------------------------------------------------------------------------- */
+:root {
+  --background: var(--raw-color-obsidian);
+  --foreground: var(--raw-color-gray-100);
+  --muted: var(--raw-color-gray-400);
+  --card: var(--raw-color-card);
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: var(--raw-color-accent);
+  --accent-secondary: var(--raw-color-accent-secondary);
+
+  --duration-fast: var(--raw-duration-fast);
+  --duration-normal: var(--raw-duration-normal);
+}
+
+/* Theme is class-based and defaults to dark. `html.light` is toggled by the ThemeToggle
+   button and persisted in localStorage; the OS preference is intentionally ignored so the
+   site always opens black unless the visitor chose otherwise. */
+:root {
+  color-scheme: dark;
+  /* Utilities like text-white/70 or bg-black/60 read these, so the same classes stay
+     legible in both themes: "white" means on-surface ink, "black" means the surface. */
+  --ink: #ffffff;
+  --surface: #000000;
+  --raw-color-surface-2: #09090b;
+}
+
+html.light {
+  color-scheme: light;
+  --background: #f7f7f8;
+  --foreground: #0b0b0e;
+  --muted: #52525b;
+  --card: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --ink: #0b0b0e;
+  --surface: #ffffff;
+  --raw-color-surface-2: #f1f1f3;
+  --raw-color-card: #ffffff;
+}
+
+/* ---------------------------------------------------------------------------
+   THEME BINDINGS
+   --------------------------------------------------------------------------- */
+@theme inline {
+  --color-white: var(--ink);
+  --color-black: var(--surface);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-secondary: var(--accent-secondary);
+  
+  --font-sans: 'Proxima Nova', 'Futura PT', var(--font-onest), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Proxima Nova', 'Futura PT', var(--font-onest), sans-serif;
+
+  --leading-display: 1.1;
+
+  --ease-entrance: cubic-bezier(0.2, 0, 0, 1);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Proxima Nova', 'Futura PT', var(--font-onest), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.font-mono {
+  font-family: 'Proxima Nova', 'Futura PT', var(--font-onest), -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+@layer base {
+  html {
+    font-size: 16px;
+  }
+
+  @media (max-width: 1920px) {
+    html {
+      font-size: 0.833333vw;
+    }
+  }
+
+  @media (max-width: 1440px) {
+    html {
+      font-size: 1.111111vw;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    html {
+      font-size: 1.5625vw;
+    }
+  }
+
+  @media (max-width: 640px) {
+    html {
+      font-size: 4.444444vw;
+    }
+  }
+}
+
+@layer utilities {
+  @keyframes glitch-anim {
+    0% { clip-path: inset(10% 0 80% 0); transform: translate(-2px, 2px); }
+    10% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); filter: hue-rotate(90deg); }
+    20% { clip-path: inset(40% 0 40% 0); transform: translate(-2px, -2px); }
+    30% { clip-path: inset(10% 0 60% 0); transform: translate(2px, 2px); filter: hue-rotate(-90deg); }
+    40% { clip-path: inset(30% 0 20% 0); transform: translate(-2px, 2px); }
+    50% { clip-path: inset(0 0 0 0); transform: translate(0); filter: hue-rotate(0); }
+    100% { clip-path: inset(0 0 0 0); transform: translate(0); filter: hue-rotate(0); }
+  }
+
+  .glitch-effect {
+    animation: glitch-anim 1s cubic-bezier(.25, .46, .45, .94) both;
+    animation-delay: 1.5s;
+  }
+
+  .glitch-hover {
+    animation: glitch-anim-hover 0.4s cubic-bezier(.25, .46, .45, .94) both;
+  }
+
+  @keyframes glitch-anim-hover {
+    0% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    20% { clip-path: inset(20% 0 60% 0); transform: translate(-4px, 2px); filter: hue-rotate(90deg) contrast(1.2); }
+    40% { clip-path: inset(60% 0 20% 0); transform: translate(4px, -2px); filter: hue-rotate(-90deg) contrast(1.2); }
+    60% { clip-path: inset(40% 0 40% 0); transform: translate(-2px, 2px); filter: hue-rotate(45deg); }
+    80% { clip-path: inset(80% 0 10% 0); transform: translate(2px, -2px); filter: hue-rotate(-45deg); }
+    100% { clip-path: inset(0 0 0 0); transform: translate(0); filter: hue-rotate(0) contrast(1); }
+  }
+
+  .bg-grid-pattern {
+    background-size: 50px 50px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
+
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #ffffff 0%, #e11d48 50%, #f43f5e 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-gradient-accent {
+    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+  }
+}
+
+@layer components {}
+
+/* ---- Hero motion (compositor-only properties for smooth 60fps) ---- */
+@keyframes word-up {
+  from { transform: translate3d(0, 110%, 0) rotate(2deg); opacity: 0; }
+  to   { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 1; }
+}
+@keyframes fade-up {
+  from { transform: translate3d(0, 18px, 0); opacity: 0; }
+  to   { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+@keyframes orb-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -14px, 0); }
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.85; }
+}
+
+/* Intro loader skipped (set on <html> before first paint in layout.tsx). */
+html.aw-skip-loader [data-preloader] {
+  display: none !important;
+}
+html.aw-skip-loader [data-preloader-content] {
+  visibility: visible !important;
+}
